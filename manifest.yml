@@ -1,0 +1,7 @@
+applications:
+- name: crunchtime-io-amqp
+  memory: 512M
+  env: {
+    }
+  services: {
+    }
