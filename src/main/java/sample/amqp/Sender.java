@@ -19,10 +19,11 @@ package sample.amqp;
 import javax.annotation.PostConstruct;
 
 import org.springframework.amqp.core.AmqpAdmin;
+import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
+import org.springframework.amqp.core.TopicExchange;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 
 public class Sender {
 
@@ -34,12 +35,15 @@ public class Sender {
 
 	@PostConstruct
 	public void setUpQueue() {
-		this.amqpAdmin.declareQueue(new Queue("foo"));
+	    Queue queue = new Queue("myQueue");
+	    this.amqpAdmin.declareQueue(queue);
+		TopicExchange exchange = new TopicExchange("chatExchange");
+		this.amqpAdmin.declareBinding(BindingBuilder.bind(queue).to(exchange).with("*"));
 	}
 
-	@Scheduled(fixedDelay = 1000L)
-	public void send() {
-		this.rabbitTemplate.convertAndSend("foo", "hello");
-	}
+//	@Scheduled(fixedDelay = 1000L)
+//	public void send() {
+//		this.rabbitTemplate.convertAndSend("messages", "hello");
+//	}
 
 }

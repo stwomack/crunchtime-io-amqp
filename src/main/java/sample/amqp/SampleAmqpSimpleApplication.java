@@ -16,6 +16,7 @@
 
 package sample.amqp;
 
+import org.json.JSONObject;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
@@ -53,13 +54,14 @@ public class SampleAmqpSimpleApplication {
 				this.connectionFactory);
 		Object listener = new Object() {
 			@SuppressWarnings("unused")
-			public void handleMessage(String foo) {
-				System.out.println(foo);
+			public void handleMessage(Object foo) {
+				JSONObject jsonObject = new org.json.JSONObject(foo);
+				System.out.println(jsonObject);
 			}
 		};
 		MessageListenerAdapter adapter = new MessageListenerAdapter(listener);
 		container.setMessageListener(adapter);
-		container.setQueueNames("foo");
+		container.setQueueNames("myQueue");
 		return container;
 	}
 
