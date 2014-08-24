@@ -16,6 +16,9 @@
 
 package sample.amqp;
 
+import java.io.UnsupportedEncodingException;
+
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.springframework.amqp.core.AmqpTemplate;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
@@ -47,15 +50,17 @@ public class SampleAmqpSimpleApplication {
 	public Sender mySender() {
 		return new Sender();
 	}
-
+	
 	@Bean
 	public SimpleMessageListenerContainer container() {
 		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer(
 				this.connectionFactory);
 		Object listener = new Object() {
 			@SuppressWarnings("unused")
-			public void handleMessage(Object foo) {
-				JSONObject jsonObject = new org.json.JSONObject(foo);
+			public void handleMessage(Object foo) throws JSONException, UnsupportedEncodingException {
+				byte[] boo = (byte[]) foo;
+				String str1 = new String(boo, "UTF-8");
+				JSONObject jsonObject = new JSONObject(str1);
 				System.out.println(jsonObject);
 			}
 		};

@@ -22,13 +22,12 @@ import org.springframework.amqp.core.AmqpAdmin;
 import org.springframework.amqp.core.BindingBuilder;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.core.TopicExchange;
-import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class Sender {
 
-	@Autowired
-	private RabbitTemplate rabbitTemplate;
+//	@Autowired
+//	private RabbitTemplate rabbitTemplate;
 
 	@Autowired
 	private AmqpAdmin amqpAdmin;
